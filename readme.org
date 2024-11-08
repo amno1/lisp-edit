@@ -1,0 +1,46 @@
+* About
+
+Just a few very simple commands I find useful when editing Lisp in my Emacs, more or less just shorthands for kill-sexp with
+some minor whitespace cleanup added.
+
+* evaporate-forward/backward/list
+
+I find myself often in this situation:
+
+#+begin_src emacs-lisp :tangle yes
+(defun ... (&rest _ignored))
+
+(let (|(some-var-I-want-to-remove ( ... ))
+      (another-var nil)
+      (more-var))
+  ( ... ))
+#+end_src
+
+I just want to kill the variable declaration in a let expression, not replacing it with something else. I typically do that with paredit-kill, which is usually very clever. However, in this case, I am left with some whitespace which I have
+to manually remove:
+
+#+begin_src emacs-lisp :tangle yes
+(let (|
+      (another-var nil)
+      (more-var))
+  ( ... ))
+#+end_src
+
+Of course, no function can know if I want to kill current line and insert something in its place, or if I want to just remove it. Only I can know that in a particular situation, so nothing wrong with paredit-kill. I have been looking in
+paredit and even some other libraries (paxedit, smartparens and lispy) but I don't see anything what would fit my bill, so I made my own "evaporate-forward". It will kill expression after the cursor and also remove all whatespace before and
+after the cursor resulting in:
+
+#+begin_src emacs-lisp :tangle yes
+(let (|(another-var nil)
+      (more-var))
+  ( ... ))
+#+end_src
+
+Evaporeate-backward will do the similar, but if the cursor is behind an expression, it will kill expression before the cursor.
+
+Finally evaporate-space will just remove any whitespace around the point.
+
+* kill-pair
+
+Kill-pair-after and kill-pair-before kill two sexps at once and clean whitespace after/before the point.Kill-sexp is already an interactive function, however it leaves whitespace around the point untouched. Kill-pair-* this acts as a small
+shortcut to kill a pair of sexps and do some cleanup.
