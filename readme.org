@@ -44,3 +44,5 @@ Finally evaporate-space will just remove any whitespace around the point.
 
 Kill-pair-after and kill-pair-before kill two sexps at once and clean whitespace after/before the point.Kill-sexp is already an interactive function, however it leaves whitespace around the point untouched. Kill-pair-* this acts as a small
 shortcut to kill a pair of sexps and do some cleanup.
+
+Useful in plists, setq/setf and elsewhere where expressions come in a pair.
